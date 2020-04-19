@@ -264,7 +264,7 @@ class DriveByToe(JumpStartAction):
 class UngluckToe(JumpStartAction):
     @classmethod
     def lick_toe(cls):
-        print('licking "ungluck"')
+
         for pckg_key in cls.params.pckg.keys():
             pckg_info = cls.params.pckg[pckg_key]
             target_path = pckg_path = zip_path = None
@@ -297,7 +297,7 @@ class UngluckToe(JumpStartAction):
                 zip_path = pckg_path + '.tmp'
                 with open(zip_path, 'wb') as zf:
                     zf.write(zip_bytes)
-            print('ungluck', pckg_path, target_path, zip_path)
+
             os.makedirs(target_path, exist_ok=True)
             pack_file = zipfile.ZipFile(zip_path or pckg_path, 'r', zipfile.ZIP_DEFLATED)
             pack_file.extractall(path=target_path)
@@ -307,7 +307,15 @@ class UngluckToe(JumpStartAction):
 
 @bear_toe
 class RunJobToe(JumpStartAction):
+    default_gosh_path = '{WD}/go.sh'
     @classmethod
     def lick_toe(cls):
-        print('licking "run_job"')
+        if cls.params is None or 'go' not in cls.params or 'content' not in cls.params.go:
+            return
+        sh_path = cls.params.go.get('path', cls.default_gosh_path.format(WD=working_copy_path))
+        with open(sh_path, 'w') as gosh_file:
+            gosh_file.write(cls.params.go.content)
+        # print('licking "run_job"')
+        
+        # kirak egy go.sh file-t, mert valszeg nem ugyanebben a processben kene tolni, hisz pip is johet meg
         pass
