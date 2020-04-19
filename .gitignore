@@ -1,0 +1,4 @@
+.idea/*
+venv/*
+sandy_main.py
+*__pycache__*
